@@ -1,4 +1,4 @@
-package com.sme.hadoop.mapreduce.multivalues;
+package com.sme.hadoop.mapreduce.avro;
 
 import static com.sme.hadoop.util.Constant.NEW_LINE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,9 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit test of {@link MultiValuesJob}.
+ * Unit test of {@link WordCountJob}.
  */
-class MultiValuesJobTest
+class AvroWordOffsetJobTest
 {
     private static final String TEXT = "James and John in the first line" + NEW_LINE     // 32 + 1 chars
         + "John, Robert and Michael in the second line" + NEW_LINE                       // 43 + 1 chars
@@ -32,7 +32,7 @@ class MultiValuesJobTest
     void setUp() throws Exception
     {
         tempDir = Files.createTempDirectory(Paths.get("target"), "hadoopTemp");
-        tempFile = Files.createTempFile(tempDir, "MultiValues", ".txt");
+        tempFile = Files.createTempFile(tempDir, "AvroWordOffset", ".txt");
 
         Files.write(tempFile, TEXT.getBytes(StandardCharsets.UTF_8));
     }
@@ -47,12 +47,12 @@ class MultiValuesJobTest
     {
         String output = getOutput();
 
-        String[] args = new String[] {tempFile.toAbsolutePath().toString(), output, "false", "MultiValues", ".json"};
+        String[] args = new String[] {tempFile.toAbsolutePath().toString(), output, "false", "AvroWordOffset", ".json"};
 
-        int exitCode = ToolRunner.run(new MultiValuesJob(), args);
+        int exitCode = ToolRunner.run(new AvroWordOffsetJob(), args);
         assertEquals(0, exitCode);
 
-        String result = Files.readAllLines(Paths.get(output + File.separator + "MultiValues.json"), StandardCharsets.UTF_8).stream().collect(Collectors.joining());
+        String result = Files.readAllLines(Paths.get(output + File.separator + "AvroWordOffset.json"), StandardCharsets.UTF_8).stream().collect(Collectors.joining());
 
         String expectedResult = "{\"James\":\"[{\\\"lineOffset\\\":4,\\\"charOffset\\\":101},{\\\"lineOffset\\\":3,\\\"charOffset\\\":77},{\\\"lineOffset\\\":1,\\\"charOffset\\\":0}]\","
             + "\"John\":\"[{\\\"lineOffset\\\":5,\\\"charOffset\\\":155},{\\\"lineOffset\\\":2,\\\"charOffset\\\":33},{\\\"lineOffset\\\":1,\\\"charOffset\\\":10}]\","
