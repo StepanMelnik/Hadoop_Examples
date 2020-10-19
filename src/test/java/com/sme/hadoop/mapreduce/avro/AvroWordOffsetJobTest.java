@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit test of {@link WordCountJob}.
+ * Unit test of {@link JoinJob}.
  */
 class AvroWordOffsetJobTest
 {
